@@ -10,23 +10,6 @@ from launch.actions import SetEnvironmentVariable
 
 
 def generate_launch_description():
-    model_path, plugin_path, media_path = GazeboRosPaths.get_paths()
-
-    env = {
-        "GAZEBO_MODEL_PATH": model_path,
-        "GAZEBO_PLUGIN_PATH": plugin_path,
-        "GAZEBO_RESOURCE_PATH": media_path,
-    }
-
-    urdf_path = os.path.join(
-        get_package_share_directory('dual_arm_panda_moveit_gazebo'),
-        'config',
-        'myrobot.urdf'
-    )
-
-    with open(urdf_path, 'r') as infp:
-        robot_description_content = infp.read()
-
     # Package paths
     pkg_name = "dual_arm_panda_moveit_gazebo"
     pkg_share = get_package_share_directory(pkg_name)
@@ -119,7 +102,7 @@ def generate_launch_description():
     )
 
     dual_arm_motion_sine_node = Node(
-        package="dual_arm_control",  # Replace with your actual package name
+        package="dual_arm_control",
         executable="set_sine_joint_angles",
         name="set_sine_joint_angles_node",
         output="screen",
@@ -128,14 +111,11 @@ def generate_launch_description():
 
     return LaunchDescription(
         [
-            # SetEnvironmentVariable(name='GAZEBO_MODEL_PATH', value=model_path),
-            # SetEnvironmentVariable(name='GAZEBO_PLUGIN_PATH', value=plugin_path),
-            # SetEnvironmentVariable(name='GAZEBO_RESOURCE_PATH', value=media_path),
             robot_state_publisher,
             gazebo,
-            TimerAction(period=2.0, actions=[spawn_entity]),  # Wait for Gazebo to start
-            TimerAction(period=2.0, actions=controller_spawners),  # Wait for robot to spawn and ros2_control to initialize
-            TimerAction(period=2.0, actions=[rviz]),  # Start RViz last
-            TimerAction(period=2.0, actions=[dual_arm_motion_sine_node]),  # Start RViz last
+            TimerAction(period=2.0, actions=[spawn_entity]),
+            TimerAction(period=2.0, actions=controller_spawners), 
+            TimerAction(period=2.0, actions=[rviz]), 
+            TimerAction(period=2.0, actions=[dual_arm_motion_sine_node]), 
         ]
     )
