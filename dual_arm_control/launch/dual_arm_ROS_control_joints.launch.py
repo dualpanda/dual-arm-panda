@@ -102,7 +102,7 @@ def generate_launch_description():
     )
 
     dual_arm_motion_node = Node(
-        package="dual_arm_control",  # Replace with your actual package name
+        package="dual_arm_control",
         executable="set_joint_angles",
         name="set_joint_angles_node",
         output="screen",
@@ -113,9 +113,9 @@ def generate_launch_description():
         [
             robot_state_publisher,
             gazebo,
-            TimerAction(period=2.0, actions=[spawn_entity]),  # Wait for Gazebo to start
-            TimerAction(period=2.0, actions=controller_spawners),  # Wait for robot to spawn and ros2_control to initialize
-            TimerAction(period=2.0, actions=[rviz]),  # Start RViz last
-            # dual_arm_motion_node,  # Start RViz last
+            TimerAction(period=2.0, actions=[spawn_entity]),  
+            TimerAction(period=2.0, actions=controller_spawners),  
+            TimerAction(period=2.0, actions=[rviz]),  
+            dual_arm_motion_node,  
         ]
     )
