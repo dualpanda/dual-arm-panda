@@ -6,10 +6,10 @@
 #include <algorithm>  // for std::find
 #include<chrono>
 
-class DualArmCartesianMotion
+class DualPandArmMultipleCartesianMotion
 {
 public:
-  DualArmCartesianMotion(const rclcpp::Node::SharedPtr& node)
+  DualPandArmMultipleCartesianMotion(const rclcpp::Node::SharedPtr& node)
   : node_(node),
     left_arm_(node_, "left_panda_arm"),
     right_arm_(node_, "right_panda_arm"),
@@ -21,25 +21,24 @@ public:
 
     left_arm_.setPoseTarget(left_target_pose);
     right_arm_.setPoseTarget(right_target_pose);
-
-    // Plan individually
+    
     moveit::planning_interface::MoveGroupInterface::Plan left_plan, right_plan;
     bool left_success = (left_arm_.plan(left_plan) == moveit::core::MoveItErrorCode::SUCCESS);
     bool right_success = (right_arm_.plan(right_plan) == moveit::core::MoveItErrorCode::SUCCESS);
 
     if (left_success && right_success)
     {
-      // Get final joint states
+      // final joint states
       const auto& left_trajectory = left_plan.trajectory_.joint_trajectory;
       const auto& right_trajectory = right_plan.trajectory_.joint_trajectory;
       const auto& left_final_point = left_trajectory.points.back();
       const auto& right_final_point = right_trajectory.points.back();
 
-      // Get all joint names for both_arms group
+      // joint names for both_arms group
       const std::vector<std::string>& both_arms_joint_names = both_arms_.getJointNames();
       std::vector<double> combined_joint_values(both_arms_joint_names.size());
 
-      // Map left arm joints
+      // left arm joints
       for (size_t i = 0; i < left_trajectory.joint_names.size(); ++i)
       {
         const std::string& joint_name = left_trajectory.joint_names[i];
@@ -51,7 +50,7 @@ public:
         }
       }
 
-      // Map right arm joints
+      // right arm joints
       for (size_t i = 0; i < right_trajectory.joint_names.size(); ++i)
       {
         const std::string& joint_name = right_trajectory.joint_names[i];
@@ -62,8 +61,7 @@ public:
           combined_joint_values[index] = right_final_point.positions[i];
         }
       }
-
-      // Set combined target and execute
+      // combine the joint positions
       both_arms_.setJointValueTarget(combined_joint_values);
 
       moveit::planning_interface::MoveGroupInterface::Plan combined_plan;
@@ -73,13 +71,6 @@ public:
       {
         both_arms_.execute(combined_plan);
         RCLCPP_INFO(node_->get_logger(), "Both arms moved synchronously to combined joint target.");
-
-        // Optional: Print the joint values for debugging
-        RCLCPP_INFO(node_->get_logger(), "Combined joint target:");
-        for (size_t i = 0; i < both_arms_joint_names.size(); ++i)
-        {
-          RCLCPP_INFO(node_->get_logger(), "%s: %f", both_arms_joint_names[i].c_str(), combined_joint_values[i]);
-        }
       }
       else
       {
@@ -105,7 +96,7 @@ int main(int argc, char **argv)
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("dual_arm_cartesian_motion_node");
 
-  DualArmCartesianMotion dual_arm_motion(node);
+  DualPandArmMultipleCartesianMotion dual_arm_motion(node);
 
   geometry_msgs::msg::Pose right_before_lifitng_pose;
   geometry_msgs::msg::Pose left_before_lifitng_pose;
