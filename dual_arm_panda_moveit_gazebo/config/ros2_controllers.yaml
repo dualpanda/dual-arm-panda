@@ -1,0 +1,165 @@
+# This config file is used by ros2_control
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    left_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    right_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    
+    # ADD THESE GRIPPER CONTROLLERS:
+    left_gripper_controller:
+      # type: position_controllers/GripperActionController
+      type: joint_trajectory_controller/JointTrajectoryController
+    
+    right_gripper_controller:
+      # type: position_controllers/GripperActionController
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    both_arms_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+both_arms_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - right_panda_joint1
+      - right_panda_joint2
+      - right_panda_joint3
+      - right_panda_joint4
+      - right_panda_joint5
+      - right_panda_joint6
+      - right_panda_joint7
+      - left_panda_joint1
+      - left_panda_joint2
+      - left_panda_joint3
+      - left_panda_joint4
+      - left_panda_joint5
+      - left_panda_joint6
+      - left_panda_joint7
+    allow_nonzero_velocity_at_trajectory_end: true
+    # Add these parameters for better trajectory execution
+    action_monitor_rate: 20.0
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+      right_panda_joint1: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint2: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint3: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint4: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint5: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint6: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint7: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint1: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint2: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint3: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint4: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint5: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint6: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint7: {trajectory: 0.1, goal: 0.1}
+
+left_arm_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - left_panda_joint1
+      - left_panda_joint2
+      - left_panda_joint3
+      - left_panda_joint4
+      - left_panda_joint5
+      - left_panda_joint6
+      - left_panda_joint7
+    allow_nonzero_velocity_at_trajectory_end: true
+    # Add these parameters for better trajectory execution
+    action_monitor_rate: 20.0
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+      left_panda_joint1: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint2: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint3: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint4: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint5: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint6: {trajectory: 0.1, goal: 0.1}
+      left_panda_joint7: {trajectory: 0.1, goal: 0.1}
+
+right_arm_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - right_panda_joint1
+      - right_panda_joint2
+      - right_panda_joint3
+      - right_panda_joint4
+      - right_panda_joint5
+      - right_panda_joint6
+      - right_panda_joint7
+    allow_nonzero_velocity_at_trajectory_end: true
+    # Add these parameters for better trajectory execution
+    action_monitor_rate: 20.0
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+      right_panda_joint1: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint2: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint3: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint4: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint5: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint6: {trajectory: 0.1, goal: 0.1}
+      right_panda_joint7: {trajectory: 0.1, goal: 0.1}
+
+left_gripper_controller:
+  ros__parameters:
+    joints: 
+      - left_panda_finger_joint1
+      - left_panda_finger_joint2
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    allow_partial_joints_goal: true
+    # Add these parameters for better trajectory execution
+    action_monitor_rate: 20.0
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+      left_panda_finger_joint1: {trajectory: 0.1, goal: 0.1}
+      left_panda_finger_joint2: {trajectory: 0.1, goal: 0.1}
+
+right_gripper_controller:
+  ros__parameters:
+    joints: 
+      - right_panda_finger_joint1
+      - right_panda_finger_joint2
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    allow_partial_joints_goal: true
+    # Add these parameters for better trajectory execution
+    action_monitor_rate: 20.0
+    constraints:
+      stopped_velocity_tolerance: 0.01
+      goal_time: 0.0
+      right_panda_finger_joint1: {trajectory: 0.1, goal: 0.1}
+      right_panda_finger_joint2: {trajectory: 0.1, goal: 0.1}
