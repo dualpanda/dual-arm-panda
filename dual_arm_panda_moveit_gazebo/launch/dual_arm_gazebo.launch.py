@@ -132,9 +132,9 @@ def generate_launch_description():
         [
             robot_state_publisher,
             gazebo,
-            TimerAction(period=3.0, actions=[spawn_entity]),  # Wait for Gazebo to start
-            TimerAction(period=8.0, actions=controller_spawners),  # Wait for robot to spawn and ros2_control to initialize
-            TimerAction(period=12.0, actions=[move_group]),  # Wait for controllers to load
-            TimerAction(period=15.0, actions=[rviz]),  # Start RViz last
+            TimerAction(period=3.0, actions=[spawn_entity]), 
+            TimerAction(period=8.0, actions=controller_spawners), 
+            TimerAction(period=12.0, actions=[move_group]),  
+            TimerAction(period=15.0, actions=[rviz]), 
         ]
     )
